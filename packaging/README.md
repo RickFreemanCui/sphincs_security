@@ -27,6 +27,9 @@ packaging/build_pyinstaller.sh gui
 # 打包 PyQt GUI (尝试包含 Qt 插件)
 packaging/build_pyinstaller.sh pyqt
 
+# 打包中文 Web GUI
+packaging/build_pyinstaller.sh web_cn
+
 # 打包 Web GUI (Flask)（生成一个可运行的可执行文件，运行后会启动本地 HTTP 服务）
 packaging/build_pyinstaller.sh web
 ```

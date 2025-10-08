@@ -6,10 +6,11 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
 usage() {
-  echo "Usage: $0 [gui|web|pyqt]"
-  echo "  gui  -> build spx_gui.py (tkinter desktop GUI)"
-  echo "  web  -> build spx_gui_web.py (Flask web GUI)"
-  echo "  pyqt -> build spx_gui_pyqt.py (PyQt6/PyQt5 GUI)"
+  echo "Usage: $0 [gui|web|web_cn|pyqt]"
+  echo "  gui    -> build spx_gui.py (tkinter desktop GUI)"
+  echo "  web    -> build spx_gui_web.py (Flask web GUI)"
+  echo "  web_cn -> build spx_gui_web_cn.py (Flask 中文 Web GUI)"
+  echo "  pyqt   -> build spx_gui_pyqt.py (PyQt6/PyQt5 GUI)"
   exit 1
 }
 
@@ -18,7 +19,7 @@ if [[ ${#} -ne 1 ]]; then
 fi
 
 MODE="$1"
-if [[ "$MODE" != "gui" && "$MODE" != "web" ]]; then
+if [[ "$MODE" != "gui" && "$MODE" != "web" && "$MODE" != "web_cn" && "$MODE" != "pyqt" ]]; then
   usage
 fi
 
@@ -45,6 +46,9 @@ if [[ "$MODE" == "gui" ]]; then
 elif [[ "$MODE" == "pyqt" ]]; then
   ENTRY="spx_gui_pyqt.py"
   NAME="spx_gui_pyqt"
+elif [[ "$MODE" == "web_cn" ]]; then
+  ENTRY="spx_gui_web_cn.py"
+  NAME="spx_gui_web_cn"
 else
   ENTRY="spx_gui_web.py"
   NAME="spx_gui_web"
