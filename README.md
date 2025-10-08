@@ -27,6 +27,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+**可以选用以下四种GUI的其中一种**
+
 3) 运行 Web GUI（英文）：
 
 ```bash
@@ -43,18 +45,18 @@ python3 spx_gui_web_cn.py
 
 5) 运行桌面 GUI：
 
-tkinter 版本（无需额外安装 GUI 库，但打包时需注意本机 Python 是否包含 tkinter）
+- tkinter 版本（无需额外安装 GUI 库，但打包时需注意本机 Python 是否包含 tkinter）
 ```bash
 python3 spx_gui.py
 ```
 
-PyQt 版本（需先安装 PyQt6 或 PyQt5）
+- PyQt 版本（需先安装 PyQt6 或 PyQt5）
 ```bash
 pip install PyQt6   # 或 pip install PyQt5
 python3 spx_gui_pyqt.py
 ```
 
-打包（使用 PyInstaller）
+## 打包（使用 PyInstaller）
 仓库中提供了一个辅助脚本 `packaging/build_pyinstaller.sh`，可以一键创建虚拟环境、安装 PyInstaller 与依赖并打包不同的入口脚本。
 
 用法（在项目根运行）：
