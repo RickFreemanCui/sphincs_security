@@ -173,7 +173,22 @@ def compute():
   # run calculation synchronously (can take time); if desired we can make it async
   try:
     res = bit_security(tsec, maxsigs, h, d, b, k, w)
-    result_str = str(res)
+    try:
+      q = res / 2
+    except Exception:
+      try:
+        q = float(res) / 2.0
+      except Exception:
+        q = None
+    try:
+      classical_s = "{:.3f}".format(res)
+    except Exception:
+      classical_s = str(res)
+    try:
+      quantum_s = "{:.3f}".format(q) if q is not None else "N/A"
+    except Exception:
+      quantum_s = str(q)
+    result_str = f"Classical security: {classical_s}\nQuantum security: {quantum_s}"
   except Exception as e:
     result_str = f"ERROR: {e}"
 

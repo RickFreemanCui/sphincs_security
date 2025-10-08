@@ -181,6 +181,9 @@ class SPXPyQtApp(QtWidgets.QWidget):
         threading.Thread(target=worker, daemon=True).start()
 
     def on_done(self, out: str):
+        # If out is a numeric string from bit_security, it will already be formatted by worker.
+        # Ensure we display classical and quantum security if possible.
+        # The worker already prepares a two-line message, so just set the text.
         self.result_text.setPlainText(out)
         self.status_lbl.setText('Done')
         self.compute_btn.setEnabled(True)

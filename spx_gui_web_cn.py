@@ -90,7 +90,7 @@ TEMPLATE = '''
     {% endif %}
     <form method="post" action="{{ url_for('compute') }}">
       <label>安全参数（位） <input type="text" name="tsec" value="{{ tsec|default('256') }}"></label>
-      <label>最大签名数（例如 2**64） <input type="text" name="maxsigs" value="{{ maxsigs|default('2**64') }}"></label>
+      <label>最大签名数（例如 2^64） <input type="text" name="maxsigs" value="{{ maxsigs|default('2^64') }}"></label>
       <label>超树高度（h） <input type="text" name="h" value="{{ h|default('68') }}"></label>
       <label>超树层数（d） <input type="text" name="d" value="{{ d|default('17') }}"></label>
       <label>FORS子树高度（b） <input type="text" name="b" value="{{ b|default('9') }}"></label>
@@ -128,7 +128,7 @@ TEMPLATE = '''
 @app.route('/', methods=['GET'])
 def index():
   ctx = dict(import_error=import_error,
-         tsec='256', maxsigs='2**64', h='68', d='17', b='9', k='35', w='16')
+         tsec='256', maxsigs='2^64', h='68', d='17', b='9', k='35', w='16')
   return render_template_string(TEMPLATE, **ctx)
 
 
@@ -151,7 +151,7 @@ def compute():
   # 解析并校验输入
   try:
     tsec = int(safe_eval(request.form.get('tsec', '').strip()))
-    maxsigs = int(safe_eval(request.form.get('maxsigs', '').strip()))
+    maxsigs = int(safe_eval(request.form.get('maxsigs', '').strip().replace('^', '**')))
     h = int(safe_eval(request.form.get('h', '').strip()))
     d = int(safe_eval(request.form.get('d', '').strip()))
     b = int(safe_eval(request.form.get('b', '').strip()))
@@ -173,8 +173,23 @@ def compute():
 
   try:
     res = bit_security(tsec, maxsigs, h, d, b, k, w)
-    result_str = "{:.3f}".format(res)
-    # result_str = str(res)
+    # show both classical and quantum security (quantum = classical / 2)
+    try:
+      q = res / 2
+    except Exception:
+      try:
+        q = float(res) / 2.0
+      except Exception:
+        q = None
+    try:
+      classical_s = "{:.3f}".format(res)
+    except Exception:
+      classical_s = str(res)
+    try:
+      quantum_s = "{:.3f}".format(q) if q is not None else "N/A"
+    except Exception:
+      quantum_s = str(q)
+    result_str = f"经典安全性: {classical_s}\n量子安全性: {quantum_s}"
   except Exception as e:
     result_str = f"错误: {e}"
 

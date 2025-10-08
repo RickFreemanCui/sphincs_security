@@ -165,7 +165,23 @@ class SPXGui(tk.Tk):
         def worker():
             try:
                 res = bit_security(tsec, maxsigs, h, d, b, k, w)
-                out = str(res)
+                # classical and quantum (quantum = classical / 2)
+                try:
+                    q = res / 2
+                except Exception:
+                    try:
+                        q = float(res) / 2.0
+                    except Exception:
+                        q = None
+                try:
+                    classical_s = "{:.3f}".format(res)
+                except Exception:
+                    classical_s = str(res)
+                try:
+                    quantum_s = "{:.3f}".format(q) if q is not None else "N/A"
+                except Exception:
+                    quantum_s = str(q)
+                out = f"Classical security: {classical_s}\nQuantum security: {quantum_s}"
             except Exception as e:
                 out = f"ERROR: {e}"
             def on_done():
